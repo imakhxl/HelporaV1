@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:helpora_v1/rounded_button.dart';
 import 'package:helpora_v1/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';  // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _auth = FirebaseAuth.instance;
-  final _firestore = FirebaseFirestore.instance;  // Firestore instance
+  final _firestore = FirebaseFirestore.instance; // Firestore instance
   String? email;
   String? password;
   String? name;
@@ -44,7 +44,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kColor4,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
@@ -63,7 +63,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
               ),
               const SizedBox(height: 48.0),
-
+              Text(
+                "Get Started !",
+                style: TextStyle(
+                    color: kColor1,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: "Poppins"),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
               // Name TextField
               TextField(
                 textAlign: TextAlign.center,
@@ -71,7 +82,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   name = value;
                 },
                 decoration:
-                kTextFieldDecoration.copyWith(hintText: "Enter your name"),
+                    kTextFieldDecoration.copyWith(hintText: "Enter your name"),
               ),
               const SizedBox(height: 8.0),
 
@@ -95,7 +106,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   email = value;
                 },
                 decoration:
-                kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                    kTextFieldDecoration.copyWith(hintText: "Enter your email"),
               ),
               const SizedBox(height: 8.0),
 
@@ -113,7 +124,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
               // Register Button
               RoundedButton(
-                colour: Colors.blueAccent,
+                colour: kColor3,
                 title: 'Register',
                 onPressed: () async {
                   setState(() {
@@ -123,14 +134,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   if (validateFields()) {
                     try {
                       // Create new user in Firebase Auth
-                      final newUser = await _auth.createUserWithEmailAndPassword(
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
                         email: email!,
                         password: password!,
                       );
 
                       if (newUser != null) {
                         // Store additional user details in Firestore
-                        await _firestore.collection('users').doc(newUser.user!.uid).set({
+                        await _firestore
+                            .collection('users')
+                            .doc(newUser.user!.uid)
+                            .set({
                           'name': name,
                           'email': email,
                           'phoneNumber': phoneNumber,
@@ -144,7 +159,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       print(e);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Error: Unable to create user. Please try again.'),
+                          content: Text(
+                              'Error: Unable to create user. Please try again.'),
                         ),
                       );
                     } finally {
@@ -159,8 +175,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Please enter valid information.'),
-                        backgroundColor: Colors.red, // Optional: Set a background color for the Snackbar
-                        duration: Duration(seconds: 3), // Optional: Set the duration for the Snackbar
+                        backgroundColor: Colors
+                            .red, // Optional: Set a background color for the Snackbar
+                        duration: Duration(
+                            seconds:
+                                3), // Optional: Set the duration for the Snackbar
                       ),
                     );
                   }

@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:helpora_v1/constants.dart';
 
-
-
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
   const LoginScreen({Key? key}) : super(key: key);
@@ -24,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kColor4,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
@@ -43,13 +41,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 48.0),
+              Text(
+                "Welcome Back !",
+                style: TextStyle(
+                    color: kColor1,
+                    fontFamily: "Poppins",
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: "Enter your email"),
               ),
               const SizedBox(height: 8.0),
               TextField(
@@ -58,11 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: "Enter your password"),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: "Enter your password"),
               ),
               const SizedBox(height: 24.0),
               RoundedButton(
-                colour: Colors.lightBlueAccent,
+                colour: kColor2,
                 title: 'Log In',
                 onPressed: () async {
                   setState(() {
@@ -71,12 +83,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   try {
                     // Check if email and password are provided
-                    if (email == null || password == null || email!.isEmpty || password!.isEmpty) {
+                    if (email == null ||
+                        password == null ||
+                        email!.isEmpty ||
+                        password!.isEmpty) {
                       throw Exception("Email and password cannot be empty");
                     }
 
                     // Attempt to sign in the user with email and password
-                    final userCredential = await _auth.signInWithEmailAndPassword(
+                    final userCredential =
+                        await _auth.signInWithEmailAndPassword(
                       email: email!,
                       password: password!,
                     );
@@ -87,7 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => HomePage(
-                            userId: userCredential.user!.uid, // Use the user ID from userCredential
+                            userId: userCredential.user!
+                                .uid, // Use the user ID from userCredential
                           ),
                         ),
                       );
@@ -105,8 +122,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(errorMessage),
-                        backgroundColor: Colors.red, // Optional: Set a red background to indicate error
-                        duration: const Duration(seconds: 3), // Snackbar duration
+                        backgroundColor: Colors
+                            .red, // Optional: Set a red background to indicate error
+                        duration:
+                            const Duration(seconds: 3), // Snackbar duration
                       ),
                     );
                   } finally {
