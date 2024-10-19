@@ -110,7 +110,8 @@ class _PostChorePageState extends State<PostChorePage> {
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: kColor4,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: SingleChildScrollView(

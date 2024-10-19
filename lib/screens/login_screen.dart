@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:helpora_v1/screens/homepage.dart';
-import 'package:helpora_v1/screens/welcome_screen.dart';
 import 'package:helpora_v1/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:helpora_v1/constants.dart';
 
+
+
 class LoginScreen extends StatefulWidget {
   static String id = 'login_screen';
   const LoginScreen({Key? key}) : super(key: key);
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -18,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool showSpinner = false;
   String? email;
   String? password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,76 +42,80 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 48.0,
-              ),
+              const SizedBox(height: 48.0),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   email = value;
                 },
-                decoration:
-                kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+                decoration: kTextFieldDecoration.copyWith(hintText: "Enter your email"),
               ),
-              const SizedBox(
-                height: 8.0,
-              ),
+              const SizedBox(height: 8.0),
               TextField(
                 obscureText: true,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(
-                    hintText: "Enter your password"),
+                decoration: kTextFieldDecoration.copyWith(hintText: "Enter your password"),
               ),
-              const SizedBox(
-                height: 24.0,
-              ),
+              const SizedBox(height: 24.0),
               RoundedButton(
                 colour: Colors.lightBlueAccent,
                 title: 'Log In',
                 onPressed: () async {
                   setState(() {
-                    showSpinner = true;  // Show spinner while processing
+                    showSpinner = true; // Show spinner while processing
                   });
 
                   try {
+                    // Check if email and password are provided
+                    if (email == null || password == null || email!.isEmpty || password!.isEmpty) {
+                      throw Exception("Email and password cannot be empty");
+                    }
+
                     // Attempt to sign in the user with email and password
-                    final user = await _auth.signInWithEmailAndPassword(
+                    final userCredential = await _auth.signInWithEmailAndPassword(
                       email: email!,
                       password: password!,
                     );
 
                     // If login is successful, navigate to HomePage
-                    if (user != null) {
-                      Navigator.pushNamed(context, HomePage.id);
+                    if (userCredential.user != null) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(
+                            userId: userCredential.user!.uid, // Use the user ID from userCredential
+                          ),
+                        ),
+                      );
                     }
-
-                    setState(() {
-                      showSpinner = false;  // Hide spinner
-                    });
                   } catch (e) {
-                    setState(() {
-                      showSpinner = false;  // Hide spinner if an error occurs
-                    });
-
-                    // Print the error to the console (optional)
-                    print(e);
+                    // Handle specific exceptions
+                    String errorMessage;
+                    if (e is FirebaseAuthException) {
+                      errorMessage = e.message ?? 'An unknown error occurred.';
+                    } else {
+                      errorMessage = e.toString();
+                    }
 
                     // Show a Snackbar with an error message
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Incorrect login details. Please try again.'),
-                        backgroundColor: Colors.red,  // Optional: Set a red background to indicate error
-                        duration: Duration(seconds: 3),  // Snackbar duration
+                        content: Text(errorMessage),
+                        backgroundColor: Colors.red, // Optional: Set a red background to indicate error
+                        duration: const Duration(seconds: 3), // Snackbar duration
                       ),
                     );
+                  } finally {
+                    setState(() {
+                      showSpinner = false; // Hide spinner
+                    });
                   }
                 },
-              )
-
+              ),
             ],
           ),
         ),
@@ -116,4 +123,3 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
-

@@ -5,6 +5,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:helpora_v1/constants.dart';
 import 'package:helpora_v1/rounded_button.dart';
 
+
+
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
   const WelcomeScreen({Key? key}) : super(key: key);
