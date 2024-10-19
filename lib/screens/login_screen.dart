@@ -67,25 +67,48 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 24.0,
               ),
               RoundedButton(
-                  colour: Colors.lightBlueAccent,
-                  title: 'Log In',
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-                    try {
-                      final user = _auth.signInWithEmailAndPassword(
-                          email: email!, password: password!);
-                      if (user != null) {
-                        Navigator.pushNamed(context, HomePage.id);
-                      }
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    } catch (e) {
-                      print(e);
+                colour: Colors.lightBlueAccent,
+                title: 'Log In',
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;  // Show spinner while processing
+                  });
+
+                  try {
+                    // Attempt to sign in the user with email and password
+                    final user = await _auth.signInWithEmailAndPassword(
+                      email: email!,
+                      password: password!,
+                    );
+
+                    // If login is successful, navigate to HomePage
+                    if (user != null) {
+                      Navigator.pushNamed(context, HomePage.id);
                     }
-                  }),
+
+                    setState(() {
+                      showSpinner = false;  // Hide spinner
+                    });
+                  } catch (e) {
+                    setState(() {
+                      showSpinner = false;  // Hide spinner if an error occurs
+                    });
+
+                    // Print the error to the console (optional)
+                    print(e);
+
+                    // Show a Snackbar with an error message
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Incorrect login details. Please try again.'),
+                        backgroundColor: Colors.red,  // Optional: Set a red background to indicate error
+                        duration: Duration(seconds: 3),  // Snackbar duration
+                      ),
+                    );
+                  }
+                },
+              )
+
             ],
           ),
         ),
