@@ -22,7 +22,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     controller =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     // animation = CurvedAnimation(parent: controller!, curve: Curves.decelerate);
-    animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
+    animation = ColorTween(begin: Colors.blueGrey, end: Color(0xFFFCF1E2))
         .animate(controller!);
     controller!.forward();
 
@@ -68,7 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 TypewriterAnimatedTextKit(
                   text: ['Helpora'],
                   textStyle: TextStyle(
-                    color: Colors.black,
+                    color: kColor1,
                     fontFamily: 'Poppins',
                     fontSize: 45.0,
                     fontWeight: FontWeight.w900,
@@ -76,18 +76,26 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 ),
               ],
             ),
+            Text(
+              '                                             Chores on the go',
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 15,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w300),
+            ),
             const SizedBox(
               height: 48.0,
             ),
             RoundedButton(
-              colour: Colors.lightBlueAccent,
+              colour: kColor2,
               title: 'Log In',
               onPressed: () {
                 Navigator.pushNamed(context, LoginScreen.id);
               },
             ),
             RoundedButton(
-              colour: Colors.blueAccent,
+              colour: kColor3,
               title: 'Register',
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.id);
