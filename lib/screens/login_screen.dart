@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpora_v1/screens/homepage.dart';
 import 'package:helpora_v1/screens/welcome_screen.dart';
 import 'package:helpora_v1/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -76,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       final user = _auth.signInWithEmailAndPassword(
                           email: email!, password: password!);
                       if (user != null) {
-                       // Navigator.pushNamed(context, HomeScreen.id);
+                        Navigator.pushNamed(context, HomePage.id);
                       }
                       setState(() {
                         showSpinner = false;

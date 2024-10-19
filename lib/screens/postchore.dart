@@ -7,10 +7,10 @@ import 'dart:io';
 
 import '../constants.dart';
 
-const kColor1 = Color(0xFF477B72);
-const kColor2 = Color(0xFFF7BA34);
-const kColor3 = Color(0xFFEFAA7C);
-const kColor4 = Color(0xFFFCF1E2);
+// const kColor1 = Color(0xFF477B72);
+// const kColor2 = Color(0xFFF7BA34);
+// const kColor3 = Color(0xFFEFAA7C);
+// const kColor4 = Color(0xFFFCF1E2);
 
 class PostChorePage extends StatefulWidget {
   @override
@@ -110,7 +110,7 @@ class _PostChorePageState extends State<PostChorePage> {
           textAlign: TextAlign.center,
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: kColor4,
         elevation: 0,
       ),
       body: SingleChildScrollView(

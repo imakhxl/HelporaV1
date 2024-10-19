@@ -142,6 +142,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       }
                     } catch (e) {
                       print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error: Unable to create user. Please try again.'),
+                        ),
+                      );
                     } finally {
                       setState(() {
                         showSpinner = false;
@@ -151,7 +156,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     setState(() {
                       showSpinner = false;
                     });
-                    print("Please enter valid information.");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please enter valid information.'),
+                        backgroundColor: Colors.red, // Optional: Set a background color for the Snackbar
+                        duration: Duration(seconds: 3), // Optional: Set the duration for the Snackbar
+                      ),
+                    );
                   }
                 },
               ),
