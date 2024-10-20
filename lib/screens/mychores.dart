@@ -13,6 +13,56 @@ class MyChoresPage extends StatefulWidget {
 class _MyChoresPageState extends State<MyChoresPage> {
   final User? user = FirebaseAuth.instance.currentUser;
 
+  // Method to delete a chore
+  void deleteChore(String choreId) async {
+    await FirebaseFirestore.instance.collection('chores').doc(choreId).delete();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Chore deleted successfully!')),
+    );
+  }
+
+  // Method to show confirmation dialog
+  void showDeleteConfirmationDialog(String choreId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: kColor1, // Set the background color
+          title: Text(
+            'Delete Chore',
+            style: TextStyle(color: kColor4), // Change title text color
+          ),
+          content: Text(
+            'Are you sure you want to delete this chore?',
+            style: TextStyle(color: kColor4), // Change content text color
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: kColor4), // Change cancel button text color
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                deleteChore(choreId); // Call delete method
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(color: kColor4), // Change delete button text color
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +108,9 @@ class _MyChoresPageState extends State<MyChoresPage> {
                       children: [
                         // Chore Name
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+<<<<<<< HEAD
                             Icon(Icons.task_alt, color: kColor1),
                             SizedBox(width: 8),
                             Text(
@@ -69,6 +121,26 @@ class _MyChoresPageState extends State<MyChoresPage> {
                                 fontSize: 22,
                                 color: kColor1,
                               ),
+=======
+                            Row(
+                              children: [
+                                Icon(Icons.task_alt, color: kPrimaryColor),
+                                SizedBox(width: 8),
+                                Text(
+                                  chore['choreName'] ?? 'No Chore Name',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: kPrimaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Delete Icon
+                            IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () => showDeleteConfirmationDialog(choreId),
+>>>>>>> ec4c644ea76f496b15dac4674d1471247c8b0bad
                             ),
                           ],
                         ),
@@ -135,7 +207,6 @@ class _MyChoresPageState extends State<MyChoresPage> {
                         ),
                         SizedBox(height: 8),
                         // Interested People Button
-                        // Inside ListView.builder
                         Align(
                           alignment: Alignment.center,
                           child: Row(

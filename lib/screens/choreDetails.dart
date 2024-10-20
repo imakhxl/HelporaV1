@@ -55,8 +55,11 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
         final String? name = userDoc.data()?['name'] ?? 'Not available';
         final String? phoneNumber = userDoc.data()?['phoneNumber'] ?? 'Not available';
 
+        final interestedChoresRef = _firestore.collection('interestedChores');
+
         if (!isInterested) {
-          await _firestore.collection('interestedChores').add({
+          // Add the chore to interestedChores
+          await interestedChoresRef.add({
             'choreId': widget.choreId,
             'choreName': choreDetails?['choreName'] ?? 'Not available',
             'description': choreDetails?['description'] ?? 'Not available',
@@ -74,7 +77,18 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
             'phoneNumber': phoneNumber,
           });
         } else {
-          // Logic to remove from interestedChores can be implemented here
+          // Find and delete the document from interestedChores
+          final querySnapshot = await interestedChoresRef
+              .where('choreId', isEqualTo: widget.choreId)
+              .where('userId', isEqualTo: user.uid)
+              .get();
+
+          if (querySnapshot.docs.isNotEmpty) {
+            // Delete the document(s) related to the chore
+            for (var doc in querySnapshot.docs) {
+              await doc.reference.delete();
+            }
+          }
         }
 
         setState(() {
@@ -85,6 +99,8 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
       print(e);
     }
   }
+
+
 
   String _formatDate(Timestamp timestamp) {
     final date = timestamp.toDate(); // Convert Timestamp to DateTime
