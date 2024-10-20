@@ -5,27 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:helpora_v1/screens/login_screen.dart';
 import 'package:helpora_v1/constants.dart';
 
-// const kColor1 = Color(0xFF477B72);
-// const kColor2 = Color(0xFFF7BA34);
-// const kColor3 = Color(0xFFEFAA7C);
-// const kColor4 = Color(0xFFFCF1E2);
-
-const kTextFieldDecoration = InputDecoration(
-  hintText: '',
-  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-  border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  enabledBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: kColor1, width: 1.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-  focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: kColor2, width: 2.0),
-    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-  ),
-);
-
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -81,19 +60,19 @@ class _ProfileState extends State<Profile> {
                 children: [
                   const Gap(20),
                   CircleAvatar(
-                    radius: 45,
+                    radius: 55,
                     backgroundColor: kColor1,
                     child: Icon(
                       Icons.person,
-                      size: 70,
+                      size: 80,
                       color: Colors.white,
                     ),
                   ),
                   const Gap(10),
                   Text(
                     name,
-                    style: TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(fontFamily: "Poppins",
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: kColor1,
                     ),
@@ -115,8 +94,8 @@ class _ProfileState extends State<Profile> {
                           const Gap(3),
                           Text(
                             'About me',
-                            style: TextStyle(
-                              fontSize: 15,
+                            style: TextStyle(fontFamily: "Poppins",
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: kColor1,
                             ),
@@ -138,19 +117,19 @@ class _ProfileState extends State<Profile> {
                             children: [
                               Text(
                                 'Name: $name',
-                                style: TextStyle(fontSize: 16, color: kColor1),
+                                style: kText1,
                               ),
                               const Gap(5),
                               Text(
                                 'Email: $email',
-                                style: TextStyle(fontSize: 16, color: kColor1),
+                                style: kText1,
                               ),
                               const Gap(5),
                               Text(
                                 'Phone Number: $phoneNumber',
-                                style: TextStyle(fontSize: 16, color: kColor1),
+                                style: kText1,
                               ),
-                              const Gap(5),
+                              const Gap(20),
                               Center(
                                 child: ElevatedButton.icon(
                                   onPressed: () {
@@ -170,7 +149,7 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
                                   icon: Icon(Icons.edit, color: Colors.white),
-                                  label: Text('Edit Details', style: TextStyle(color: Colors.white)),
+                                  label: Text('Edit Details', style: TextStyle(fontFamily: "Poppins",color: kColor4, fontWeight: FontWeight.w600)),
                                 ),
                               ),
                             ],
@@ -193,7 +172,7 @@ class _ProfileState extends State<Profile> {
                           ),
                           child: const Text(
                             'Logout',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(fontFamily:"Poppins", color: kColor4, fontWeight: FontWeight.w600, fontSize: 16),
                           ),
                         ),
                       ),

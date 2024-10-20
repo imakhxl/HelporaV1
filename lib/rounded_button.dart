@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpora_v1/constants.dart';
 
 class RoundedButton extends StatelessWidget {
   RoundedButton({this.colour, this.title, this.onPressed});
@@ -19,7 +20,7 @@ class RoundedButton extends StatelessWidget {
           minWidth: 200.0,
           height: 42.0,
           child: Text(
-            title!,
+            title!, style: TextStyle(fontFamily: "Poppins"),
           ),
         ),
       ),

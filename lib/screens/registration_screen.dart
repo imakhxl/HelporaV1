@@ -1,10 +1,12 @@
-import 'dart:typed_data';
 import 'dart:io'; // For File class
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart'; // For Firebase Storage
+import 'package:gap/gap.dart';
+import 'package:helpora_v1/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -52,9 +54,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Future<String?> _uploadImage(File image) async {
     try {
       String fileName = 'idproofs/${DateTime.now().millisecondsSinceEpoch}.png';
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child(fileName);
+      Reference ref = FirebaseStorage.instance.ref().child(fileName);
 
       UploadTask uploadTask = ref.putFile(image);
 
@@ -81,7 +81,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 title: Text('Choose from gallery'),
                 onTap: () async {
                   Navigator.of(context).pop();
-                  final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+                  final pickedFile =
+                      await _picker.pickImage(source: ImageSource.gallery);
                   setState(() {
                     _idProofImage = File(pickedFile!.path);
                   });
@@ -92,7 +93,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 title: Text('Take a photo'),
                 onTap: () async {
                   Navigator.of(context).pop();
-                  final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+                  final pickedFile =
+                      await _picker.pickImage(source: ImageSource.camera);
                   setState(() {
                     _idProofImage = File(pickedFile!.path);
                   });
@@ -108,7 +110,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kColor4,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
@@ -117,28 +119,53 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
+                  ),
+                ),
+              ),
+              Text(
+                "Get Started !",textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.w700,
+                  color: kColor1,
+                  fontFamily: "Poppins",
+                ),
+              ),
+              const Gap(20),
               TextField(
+                keyboardType: TextInputType.name,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   name = value;
                 },
-                decoration: InputDecoration(hintText: "Enter your name"),
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your name"),
               ),
               const SizedBox(height: 8.0),
               TextField(
+                keyboardType: TextInputType.phone,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   phoneNumber = value;
                 },
-                decoration: InputDecoration(hintText: "Enter your phone number"),
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your phone number"),
               ),
               const SizedBox(height: 8.0),
               TextField(
+                keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: InputDecoration(hintText: "Enter your email"),
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your email"),
               ),
               const SizedBox(height: 8.0),
               TextField(
@@ -147,24 +174,40 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: InputDecoration(hintText: "Enter your password"),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: "Enter your password"),
               ),
               const SizedBox(height: 24.0),
 
               // ID Proof Upload Button
               TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(50, 20),
+                  foregroundColor: Colors.black,
+                  backgroundColor: kColor2,
+                  side: BorderSide(
+                    color: kColor1,
+                    width: 2,
+                    style: BorderStyle.solid,
+                  ),
+                  padding: EdgeInsets.all(5.0),
+                ),
                 onPressed: _pickImage,
-                child: Text('Upload ID Proof'),
+                child: Text('Upload ID Proof', style: kText1.copyWith(fontWeight: FontWeight.w500),),
               ),
 
               // Show uploaded image preview (optional)
               _idProofImage != null
                   ? Image.file(_idProofImage!)
-                  : Text("No image selected"),
+                  : Text("No image selected", textAlign: TextAlign.center,style: kTextPoppins,),
 
               const SizedBox(height: 24.0),
 
               ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFEFAA7C)),
+
+                ),
                 onPressed: () async {
                   setState(() {
                     showSpinner = true;
@@ -172,7 +215,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                   if (validateFields()) {
                     try {
-                      final newUser = await _auth.createUserWithEmailAndPassword(
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
                         email: email!,
                         password: password!,
                       );
@@ -185,7 +229,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         }
 
                         // Store additional user details in Firestore
-                        await _firestore.collection('users').doc(newUser.user!.uid).set({
+                        await _firestore
+                            .collection('users')
+                            .doc(newUser.user!.uid)
+                            .set({
                           'name': name,
                           'email': email,
                           'phoneNumber': phoneNumber,
@@ -196,13 +243,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => HomePage(userId: newUser.user!.uid)),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(userId: newUser.user!.uid)),
                         );
                       }
                     } catch (e) {
                       print(e);
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error: Unable to create user. Please try again.')),
+                        SnackBar(
+                            content: Text(
+                                'Error: Unable to create user. Please try again.')),
                       );
                     } finally {
                       setState(() {
@@ -214,11 +265,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       showSpinner = false;
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Please enter valid information.')),
+                      SnackBar(
+                          content: Text('Please enter valid information.')),
                     );
                   }
                 },
-                child: Text('Register'),
+                child: Text('Register',style: TextStyle(fontFamily: "Poppins",color: Colors.black, fontSize: 15),),
               ),
             ],
           ),
@@ -227,5 +279,3 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 }
-
-
