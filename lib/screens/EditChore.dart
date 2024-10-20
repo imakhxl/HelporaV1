@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpora_v1/screens/choreDetails.dart';
 import 'package:helpora_v1/constants.dart';
 
-// Import the ChoreDetailsPage for navigation
-
 
 class EditChorePage extends StatefulWidget {
   final String choreId;
@@ -91,24 +89,28 @@ class _EditChorePageState extends State<EditChorePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
+              style: kTextPoppins,
               decoration: kTextFieldDecoration.copyWith(labelText: 'Chore Name'),
               onChanged: (value) => choreName = value,
-              controller: TextEditingController(text: choreName),
+              controller: TextEditingController(text: choreName,),
             ),
             const SizedBox(height: 16.0),
             TextField(
+              style: kTextPoppins,
               decoration: kTextFieldDecoration.copyWith(labelText: 'Contact'),
               onChanged: (value) => contact = value,
               controller: TextEditingController(text: contact),
             ),
             const SizedBox(height: 16.0),
             TextField(
+              style: kTextPoppins,
               decoration: kTextFieldDecoration.copyWith(labelText: 'Location'),
               onChanged: (value) => location = value,
               controller: TextEditingController(text: location),
             ),
             const SizedBox(height: 16.0),
             TextField(
+              style: kTextPoppins,
               decoration: kTextFieldDecoration.copyWith(labelText: 'Reward'),
               onChanged: (value) => reward = value,
               controller: TextEditingController(text: reward),
@@ -119,7 +121,7 @@ class _EditChorePageState extends State<EditChorePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Is Completed'),
+                const Text('Is Completed',style: kTextPoppins,),
                 Switch(
                   value: isCompleted,
                   onChanged: (value) {
@@ -127,6 +129,7 @@ class _EditChorePageState extends State<EditChorePage> {
                       isCompleted = value;
                     });
                   },
+                  activeColor: kColor2,
                 ),
               ],
             ),
@@ -135,7 +138,7 @@ class _EditChorePageState extends State<EditChorePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Is Urgent'),
+                const Text('Is Urgent', style: kTextPoppins,),
                 Switch(
                   value: isUrgent,
                   onChanged: (value) {
@@ -143,6 +146,7 @@ class _EditChorePageState extends State<EditChorePage> {
                       isUrgent = value;
                     });
                   },
+                  activeColor: kColor2,
                 ),
               ],
             ),
@@ -157,7 +161,7 @@ class _EditChorePageState extends State<EditChorePage> {
                   foregroundColor: kColor4,
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                 ),
-                child: const Text("Update Chore"),
+                child: const Text("Update Chore", style: kTextPoppins,),
               ),
             ),
 

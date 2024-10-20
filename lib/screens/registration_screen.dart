@@ -82,7 +82,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onTap: () async {
                   Navigator.of(context).pop();
                   final pickedFile =
-                      await _picker.pickImage(source: ImageSource.gallery);
+                  await _picker.pickImage(source: ImageSource.gallery);
                   setState(() {
                     _idProofImage = File(pickedFile!.path);
                   });
@@ -94,7 +94,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 onTap: () async {
                   Navigator.of(context).pop();
                   final pickedFile =
-                      await _picker.pickImage(source: ImageSource.camera);
+                  await _picker.pickImage(source: ImageSource.camera);
                   setState(() {
                     _idProofImage = File(pickedFile!.path);
                   });
@@ -216,7 +216,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   if (validateFields()) {
                     try {
                       final newUser =
-                          await _auth.createUserWithEmailAndPassword(
+                      await _auth.createUserWithEmailAndPassword(
                         email: email!,
                         password: password!,
                       );

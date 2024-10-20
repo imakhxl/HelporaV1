@@ -5,6 +5,8 @@ import 'package:helpora_v1/constants.dart';
 import 'package:helpora_v1/screens/choreDetails.dart';
 import 'interestedPeople.dart';
 
+const kPrimaryColor = Color(0xFF344955);
+
 class MyChoresPage extends StatefulWidget {
   @override
   _MyChoresPageState createState() => _MyChoresPageState();
@@ -43,7 +45,8 @@ class _MyChoresPageState extends State<MyChoresPage> {
               },
               child: Text(
                 'Cancel',
-                style: TextStyle(color: kColor4), // Change cancel button text color
+                style: TextStyle(
+                    color: kColor4), // Change cancel button text color
               ),
             ),
             TextButton(
@@ -53,7 +56,8 @@ class _MyChoresPageState extends State<MyChoresPage> {
               },
               child: Text(
                 'Delete',
-                style: TextStyle(color: kColor4), // Change delete button text color
+                style: TextStyle(
+                    color: kColor4), // Change delete button text color
               ),
             ),
           ],
@@ -62,14 +66,12 @@ class _MyChoresPageState extends State<MyChoresPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kColor4,
       appBar: AppBar(
-        title: Text('My Chores', style: kTextPoppins,),
-        backgroundColor: kColor4,
+        title: Text('My Chores'),
+        backgroundColor: Colors.transparent,
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -85,15 +87,14 @@ class _MyChoresPageState extends State<MyChoresPage> {
           final chores = snapshot.data?.docs;
           if (chores == null || chores.isEmpty) {
             return Center(
-              child: Text('No chores found!', style: kTextPoppins,),
+              child: Text('No chores found!'),
             );
           }
           return ListView.builder(
             itemCount: chores.length,
             itemBuilder: (context, index) {
               final chore = chores[index];
-              final choreId = chore.id;  // Get the chore ID
-
+              final choreId = chore.id; // Get the chore ID
               return Card(
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 elevation: 4,
@@ -110,18 +111,6 @@ class _MyChoresPageState extends State<MyChoresPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-<<<<<<< HEAD
-                            Icon(Icons.task_alt, color: kColor1),
-                            SizedBox(width: 8),
-                            Text(
-                              chore['choreName'] ?? 'No Chore Name',
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                                color: kColor1,
-                              ),
-=======
                             Row(
                               children: [
                                 Icon(Icons.task_alt, color: kPrimaryColor),
@@ -139,8 +128,8 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             // Delete Icon
                             IconButton(
                               icon: Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => showDeleteConfirmationDialog(choreId),
->>>>>>> ec4c644ea76f496b15dac4674d1471247c8b0bad
+                              onPressed: () =>
+                                  showDeleteConfirmationDialog(choreId),
                             ),
                           ],
                         ),
@@ -153,7 +142,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Location: ${chore['location'] ?? 'Unknown'}',
-                                style: kText2,
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ],
@@ -167,7 +156,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Reward: ${chore['reward'] ?? 'None'}',
-                                style: kText2,
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ],
@@ -180,14 +169,14 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             SizedBox(width: 8),
                             Text(
                               'Urgent: ${chore['isUrgent'] ? "Yes" : "No"}',
-                              style: kText2,
+                              style: TextStyle(fontSize: 16),
                             ),
                             SizedBox(width: 20),
                             Icon(Icons.check_circle, color: Colors.green),
                             SizedBox(width: 8),
                             Text(
                               'Completed: ${chore['isCompleted'] ? "Yes" : "No"}',
-                              style: kText2,
+                              style: TextStyle(fontSize: 16),
                             ),
                           ],
                         ),
@@ -200,7 +189,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Owner: ${chore['ownerName'] ?? 'Unknown'}',
-                                style:kText2,
+                                style: TextStyle(fontSize: 16),
                               ),
                             ),
                           ],
@@ -210,7 +199,8 @@ class _MyChoresPageState extends State<MyChoresPage> {
                         Align(
                           alignment: Alignment.center,
                           child: Row(
-                            mainAxisSize: MainAxisSize.min, // Minimize the row size to fit buttons
+                            mainAxisSize: MainAxisSize
+                                .min, // Minimize the row size to fit buttons
                             children: [
                               // New View Details Button
                               ElevatedButton.icon(
@@ -219,14 +209,16 @@ class _MyChoresPageState extends State<MyChoresPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => ChoreDetailsPage(choreId: choreId),
+                                      builder: (context) =>
+                                          ChoreDetailsPage(choreId: choreId),
                                     ),
                                   );
                                 },
                                 icon: Icon(Icons.info, color: Colors.white),
-                                label: Text('View Details', style: TextStyle(color: kColor4, fontFamily: "Poppins", fontWeight: FontWeight.w600),),
+                                label: Text('View Details'),
                                 style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white, // Text/Icon color
+                                  foregroundColor:
+                                      Colors.white, // Text/Icon color
                                   backgroundColor: kColor2, // Background color
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -241,14 +233,17 @@ class _MyChoresPageState extends State<MyChoresPage> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => InterestedPeoplePage(choreId: choreId),
+                                      builder: (context) =>
+                                          InterestedPeoplePage(
+                                              choreId: choreId),
                                     ),
                                   );
                                 },
                                 icon: Icon(Icons.people, color: Colors.white),
-                                label: Text('Interested', style: TextStyle(color: kColor4, fontFamily: "Poppins", fontWeight: FontWeight.w600),),
+                                label: Text('Interested'),
                                 style: ElevatedButton.styleFrom(
-                                  foregroundColor: Colors.white, // Text/Icon color
+                                  foregroundColor:
+                                      Colors.white, // Text/Icon color
                                   backgroundColor: kColor1, // Background color
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12),
@@ -258,21 +253,20 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             ],
                           ),
                         ),
-
                         // Image (if available)
                         chore['imageUrl'] != null
                             ? Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.network(
-                              chore['imageUrl'],
-                              height: 150,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        )
+                                padding: const EdgeInsets.only(top: 16.0),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    chore['imageUrl'],
+                                    height: 150,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
                             : Container(), // Show no image if imageUrl is not available
                       ],
                     ),

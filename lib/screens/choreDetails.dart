@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpora_v1/screens/EditChore.dart';
 import 'package:intl/intl.dart'; // Import intl for date formatting
 import 'package:helpora_v1/constants.dart'; // Import your constants
- // Import your edit chore page
+// Import your edit chore page
 
 class ChoreDetailsPage extends StatefulWidget {
   final String choreId;
@@ -30,7 +30,8 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
 
   Future<void> _fetchChoreDetails() async {
     try {
-      final docSnapshot = await _firestore.collection('chores').doc(widget.choreId).get();
+      final docSnapshot =
+          await _firestore.collection('chores').doc(widget.choreId).get();
       if (docSnapshot.exists) {
         setState(() {
           choreDetails = docSnapshot.data();
@@ -50,10 +51,13 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
       final userDoc = await userDocRef.get();
 
       if (userDoc.exists) {
-        final int currentHumanityPoints = userDoc.data()?['humanityPoints'] ?? 0;
-        final String? idProofUrl = userDoc.data()?['idProofUrl'] ?? 'Not available';
+        final int currentHumanityPoints =
+            userDoc.data()?['humanityPoints'] ?? 0;
+        final String? idProofUrl =
+            userDoc.data()?['idProofUrl'] ?? 'Not available';
         final String? name = userDoc.data()?['name'] ?? 'Not available';
-        final String? phoneNumber = userDoc.data()?['phoneNumber'] ?? 'Not available';
+        final String? phoneNumber =
+            userDoc.data()?['phoneNumber'] ?? 'Not available';
 
         final interestedChoresRef = _firestore.collection('interestedChores');
 
@@ -100,11 +104,10 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
     }
   }
 
-
-
   String _formatDate(Timestamp timestamp) {
     final date = timestamp.toDate(); // Convert Timestamp to DateTime
-    final DateFormat formatter = DateFormat('MMMM dd, yyyy, h:mm a'); // Format as desired
+    final DateFormat formatter =
+        DateFormat('MMMM dd, yyyy, h:mm a'); // Format as desired
     return formatter.format(date); // Return formatted date string
   }
 
@@ -116,14 +119,13 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
         body: Center(child: CircularProgressIndicator()),
       );
     }
-
     final userId = _auth.currentUser?.uid;
     final isOwner = userId == choreDetails!['userId'];
 
     return Scaffold(
       backgroundColor: kColor4,
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           "Chore Details",
           style: kTextPoppins.copyWith(color: Colors.white),
         ),
@@ -139,7 +141,8 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
               height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(choreDetails!['imageUrl'] ?? 'https://via.placeholder.com/150'), // Default image URL
+                  image: NetworkImage(choreDetails!['imageUrl'] ??
+                      'https://via.placeholder.com/150'), // Default image URL
                   fit: BoxFit.cover,
                 ),
               ),
@@ -268,16 +271,18 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditChorePage(choreId: widget.choreId),
+                                builder: (context) =>
+                                    EditChorePage(choreId: widget.choreId),
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: kColor1, // Use a color of your choice
+                            backgroundColor:
+                                kColor1, // Use a color of your choice
                           ),
-                          child: Text(
+                          child: const Text(
                             "Edit Chore",
-                            style: kTextPoppins.copyWith(color: kColor4),
+                            style: TextStyle(color: kColor4, fontFamily: "Poppins"),
                           ),
                         ),
                       ),
@@ -295,7 +300,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                         ),
                         child: Text(
                           isInterested ? "Interested" : "Show interest",
-                          style: kTextPoppins.copyWith(color: kColor4),
+                          style: TextStyle(color: kColor4, fontFamily: "Poppins"),
                         ),
                       ),
                     ),

@@ -79,7 +79,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ],
             ),
             Text(
-              '                                             Chores on the go',
+              '                                             Where helping hands earn!',
               style: TextStyle(
                   color: Colors.black54,
                   fontSize: 15,

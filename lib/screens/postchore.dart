@@ -259,7 +259,7 @@ class _PostChorePageState extends State<PostChorePage> {
                     controller: _rewardController,
                     keyboardType: TextInputType.number,
                     decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Reward',
+                      hintText: 'Reward(Rs)',
                       prefixIcon: Icon(Icons.monetization_on, color: kColor1),
                     ),
                   ),

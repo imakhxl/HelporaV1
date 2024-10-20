@@ -34,176 +34,176 @@ class _ProfileState extends State<Profile> {
       body: _stream == null
           ? const Center(child: Text('No user data found.'))
           : StreamBuilder<DocumentSnapshot>(
-              stream: _stream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+        stream: _stream,
+        builder: (BuildContext context,
+            AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return const Center(child: Text('No user data found.'));
-                }
+          if (!snapshot.hasData || !snapshot.data!.exists) {
+            return const Center(child: Text('No user data found.'));
+          }
 
-                final userData = snapshot.data!.data() as Map<String, dynamic>;
-                final name = userData['name'] ?? '';
-                final email = userData['email'] ?? '';
-                final phoneNumber = userData['phoneNumber'] ?? '';
+          final userData = snapshot.data!.data() as Map<String, dynamic>;
+          final name = userData['name'] ?? '';
+          final email = userData['email'] ?? '';
+          final phoneNumber = userData['phoneNumber'] ?? '';
 
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Gap(20),
-                        CircleAvatar(
-                          radius: 55,
-                          backgroundColor: kColor1,
-                          child: Icon(
-                            Icons.person,
-                            size: 80,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const Gap(10),
-                        Text(
-                          name,
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: kColor1,
-                          ),
-                        ),
-                        const Gap(50),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(left: 27.0),
-                                  child: Icon(
-                                    Icons.info_outline,
-                                    color: kColor1,
-                                  ),
-                                ),
-                                const Gap(3),
-                                Text(
-                                  'About me',
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: kColor1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1, color: kColor1), // Border color
-                                borderRadius: BorderRadius.circular(13),
-                                color: Colors.white, // Background color
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Name: $name',
-                                      style: kText1,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Email: $email',
-                                      style: kText1,
-                                    ),
-                                    const Gap(5),
-                                    Text(
-                                      'Phone Number: $phoneNumber',
-                                      style: kText1,
-                                    ),
-                                    const Gap(20),
-                                    Center(
-                                      child: ElevatedButton.icon(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  EditDetailsForm(
-                                                      userData: userData),
-                                            ),
-                                          );
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: kColor2,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 10.0),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(17),
-                                          ),
-                                        ),
-                                        icon: Icon(Icons.edit,
-                                            color: Colors.white),
-                                        label: Text('Edit Details',
-                                            style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                color: kColor4,
-                                                fontWeight: FontWeight.w600)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            const Gap(100), // Gap between buttons
-                            SizedBox(
-                              width: 150,
-                              height: 40,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginScreen()),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: kColor1,
-                                ),
-                                child: const Text(
-                                  'Logout',
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      color: kColor4,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            ),
-                            const Gap(30),
-                          ],
-                        ),
-                      ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Gap(20),
+                  CircleAvatar(
+                    radius: 55,
+                    backgroundColor: kColor1,
+                    child: Icon(
+                      Icons.person,
+                      size: 80,
+                      color: Colors.white,
                     ),
                   ),
-                );
-              },
+                  const Gap(10),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: kColor1,
+                    ),
+                  ),
+                  const Gap(50),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(left: 27.0),
+                            child: Icon(
+                              Icons.info_outline,
+                              color: kColor1,
+                            ),
+                          ),
+                          const Gap(3),
+                          Text(
+                            'About me',
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: kColor1,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Container(
+                        margin:
+                        const EdgeInsets.symmetric(horizontal: 24.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 1, color: kColor1), // Border color
+                          borderRadius: BorderRadius.circular(13),
+                          color: Colors.white, // Background color
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Name: $name',
+                                style: kText1,
+                              ),
+                              const Gap(5),
+                              Text(
+                                'Email: $email',
+                                style: kText1,
+                              ),
+                              const Gap(5),
+                              Text(
+                                'Phone Number: $phoneNumber',
+                                style: kText1,
+                              ),
+                              const Gap(20),
+                              Center(
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditDetailsForm(
+                                                userData: userData),
+                                      ),
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kColor2,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 10.0),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(17),
+                                    ),
+                                  ),
+                                  icon: Icon(Icons.edit,
+                                      color: Colors.white),
+                                  label: Text('Edit Details',
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: kColor4,
+                                          fontWeight: FontWeight.w600)),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const Gap(100), // Gap between buttons
+                      SizedBox(
+                        width: 150,
+                        height: 40,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const LoginScreen()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: kColor1,
+                          ),
+                          child: const Text(
+                            'Logout',
+                            style: TextStyle(
+                                fontFamily: "Poppins",
+                                color: kColor4,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          ),
+                        ),
+                      ),
+                      const Gap(30),
+                    ],
+                  ),
+                ],
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 }
