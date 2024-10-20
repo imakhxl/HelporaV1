@@ -132,7 +132,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 "Get Started !",textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 35.0,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w500,
                   color: kColor1,
                   fontFamily: "Poppins",
                 ),
