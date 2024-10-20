@@ -101,6 +101,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
   }
 
 
+
   String _formatDate(Timestamp timestamp) {
     final date = timestamp.toDate(); // Convert Timestamp to DateTime
     final DateFormat formatter = DateFormat('MMMM dd, yyyy, h:mm a'); // Format as desired
