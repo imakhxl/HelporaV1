@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:helpora_v1/constants.dart'; // Import Firebase Auth
+import 'package:helpora_v1/screens/EdirChore.dart';
+import 'package:intl/intl.dart'; // Import intl for date formatting
+import 'package:helpora_v1/constants.dart'; // Import your constants
+ // Import your edit chore page
 
 class ChoreDetailsPage extends StatefulWidget {
   final String choreId;
@@ -27,8 +30,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
 
   Future<void> _fetchChoreDetails() async {
     try {
-      final docSnapshot =
-          await _firestore.collection('chores').doc(widget.choreId).get();
+      final docSnapshot = await _firestore.collection('chores').doc(widget.choreId).get();
       if (docSnapshot.exists) {
         setState(() {
           choreDetails = docSnapshot.data();
@@ -44,31 +46,50 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
     if (user == null) return;
 
     try {
-      if (!isInterested) {
-        // Add to interestedChores collection
-        await _firestore.collection('interestedChores').add({
-          'choreId': widget.choreId,
-          'choreName': choreDetails?['choreName'] ?? 'Not available',
-          'description': choreDetails?['description'] ?? 'Not available',
-          'location': choreDetails?['location'] ?? 'Not available',
-          'ownerName': choreDetails?['ownerName'] ?? 'Not available',
-          'reward': choreDetails?['reward'] ?? 'Not available',
-          'contact': choreDetails?['contact'] ?? 'Not available',
-          'isUrgent': choreDetails?['isUrgent'] ?? false,
-          'userId': user.uid,
-          'postedAt': choreDetails?['postedAt'] ?? DateTime.now(),
-          'imageUrl': choreDetails?['imageUrl'],
-        });
-      } else {
-        // Logic to remove from interestedChores can be implemented here
-      }
+      final userDocRef = _firestore.collection('users').doc(user.uid);
+      final userDoc = await userDocRef.get();
 
-      setState(() {
-        isInterested = !isInterested; // Toggle interest status
-      });
+      if (userDoc.exists) {
+        final int currentHumanityPoints = userDoc.data()?['humanityPoints'] ?? 0;
+        final String? idProofUrl = userDoc.data()?['idProofUrl'] ?? 'Not available';
+        final String? name = userDoc.data()?['name'] ?? 'Not available';
+        final String? phoneNumber = userDoc.data()?['phoneNumber'] ?? 'Not available';
+
+        if (!isInterested) {
+          await _firestore.collection('interestedChores').add({
+            'choreId': widget.choreId,
+            'choreName': choreDetails?['choreName'] ?? 'Not available',
+            'description': choreDetails?['description'] ?? 'Not available',
+            'location': choreDetails?['location'] ?? 'Not available',
+            'ownerName': choreDetails?['ownerName'] ?? 'Not available',
+            'reward': choreDetails?['reward'] ?? 'Not available',
+            'contact': choreDetails?['contact'] ?? 'Not available',
+            'isUrgent': choreDetails?['isUrgent'] ?? false,
+            'userId': user.uid,
+            'postedAt': choreDetails?['postedAt'] ?? DateTime.now(),
+            'imageUrl': choreDetails?['imageUrl'],
+            'humanityPoints': currentHumanityPoints,
+            'idProofUrl': idProofUrl,
+            'userName': name,
+            'phoneNumber': phoneNumber,
+          });
+        } else {
+          // Logic to remove from interestedChores can be implemented here
+        }
+
+        setState(() {
+          isInterested = !isInterested; // Toggle interest status
+        });
+      }
     } catch (e) {
       print(e);
     }
+  }
+
+  String _formatDate(Timestamp timestamp) {
+    final date = timestamp.toDate(); // Convert Timestamp to DateTime
+    final DateFormat formatter = DateFormat('MMMM dd, yyyy, h:mm a'); // Format as desired
+    return formatter.format(date); // Return formatted date string
   }
 
   @override
@@ -80,27 +101,29 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
       );
     }
 
+    final userId = _auth.currentUser?.uid;
+    final isOwner = userId == choreDetails!['userId'];
+
     return Scaffold(
       backgroundColor: kColor4,
       appBar: AppBar(
-        title: const Text(
+        title:  Text(
           "Chore Details",
-          style: kTextPoppins,
+          style: kTextPoppins.copyWith(color: Colors.white),
         ),
         backgroundColor: kColor1,
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.stretch, // Make the column take the full width
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Chore Image
             Container(
               height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(choreDetails!['imageUrl'] ??
-                      'https://via.placeholder.com/150'), // Default image URL
+                  image: NetworkImage(choreDetails!['imageUrl'] ?? 'https://via.placeholder.com/150'), // Default image URL
                   fit: BoxFit.cover,
                 ),
               ),
@@ -128,7 +151,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-                  //Description
+                  // Description
                   Row(
                     children: [
                       Icon(Icons.assignment, color: kColor1),
@@ -152,7 +175,20 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
+                  // Posted At
+                  Row(
+                    children: [
+                      Icon(Icons.access_time, color: kColor1),
+                      const SizedBox(width: 8.0),
+                      Text(
+                        choreDetails!['postedAt'] is Timestamp
+                            ? _formatDate(choreDetails!['postedAt'])
+                            : 'Not available',
+                        style: kTextPoppins,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16.0),
                   // Owner Name
                   Row(
                     children: [
@@ -165,7 +201,6 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
                   // Reward
                   Row(
                     children: [
@@ -178,7 +213,6 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
                   // Contact
                   Row(
                     children: [
@@ -191,7 +225,6 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
                   // Urgency Status
                   Row(
                     children: [
@@ -206,31 +239,54 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     ],
                   ),
                   const SizedBox(height: 24.0),
+
+                  // Edit Button (Only for owner)
+                  if (isOwner) // Check if the user is the owner
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Navigate to EditChorePage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditChorePage(choreId: widget.choreId),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: kColor1, // Use a color of your choice
+                          ),
+                          child: const Text(
+                            "Edit Chore",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  // Interested Button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _toggleInterest,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: isInterested ? kColor2 : kColor3,
+                        ),
+                        child: Text(
+                          isInterested ? "Interested" : "Show interest",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-
-            // Interested Button (Expanded to full width)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: ElevatedButton(
-                onPressed: _toggleInterest,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isInterested ? kColor2 : kColor3,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0), // Expand vertically
-                ),
-                child: Text(
-                  isInterested ? "Interested" : "Show Interest",
-                  style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontSize: 18,
-                      color: kColor4,
-                      fontWeight: FontWeight.w600), // Increase font size
-                ),
-              ),
-            ),
-            const SizedBox(height: 24.0),
           ],
         ),
       ),

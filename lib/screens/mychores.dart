@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpora_v1/constants.dart';
+import 'package:helpora_v1/screens/choreDetails.dart';
+import 'interestedPeople.dart';
 
-// const kColor1 = Color(0xFF477B72);
-// const kColor2 = Color(0xFFF7BA34);
-// const kColor3 = Color(0xFFEFAA7C);
-// const kColor4 = Color(0xFFFCF1E2);
- const kPrimaryColor = Color(0xFF344955);
+const kPrimaryColor = Color(0xFF344955);
 
 class MyChoresPage extends StatefulWidget {
   @override
@@ -45,6 +43,8 @@ class _MyChoresPageState extends State<MyChoresPage> {
             itemCount: chores.length,
             itemBuilder: (context, index) {
               final chore = chores[index];
+              final choreId = chore.id;  // Get the chore ID
+
               return Card(
                 margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                 elevation: 4,
@@ -53,119 +53,158 @@ class _MyChoresPageState extends State<MyChoresPage> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Chore Name
-                      Row(
-                        children: [
-                          Icon(Icons.task_alt, color: kPrimaryColor),
-                          SizedBox(width: 8),
-                          Text(
-                            chore['choreName'] ?? 'No Chore Name',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: kPrimaryColor,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Chore Name
+                        Row(
+                          children: [
+                            Icon(Icons.task_alt, color: kPrimaryColor),
+                            SizedBox(width: 8),
+                            Text(
+                              chore['choreName'] ?? 'No Chore Name',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: kPrimaryColor,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Location
-                      Row(
-                        children: [
-                          Icon(Icons.location_on, color: kColor1),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Location: ${chore['location'] ?? 'Unknown'}',
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        // Location
+                        Row(
+                          children: [
+                            Icon(Icons.location_on, color: kColor1),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Location: ${chore['location'] ?? 'Unknown'}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        // Reward
+                        Row(
+                          children: [
+                            Icon(Icons.monetization_on, color: kColor2),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Reward: ${chore['reward'] ?? 'None'}',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        // Urgency and Completion Status
+                        Row(
+                          children: [
+                            Icon(Icons.warning, color: Colors.redAccent),
+                            SizedBox(width: 8),
+                            Text(
+                              'Urgent: ${chore['isUrgent'] ? "Yes" : "No"}',
                               style: TextStyle(fontSize: 16),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Reward
-                      Row(
-                        children: [
-                          Icon(Icons.monetization_on, color: kColor2),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Reward: ${chore['reward'] ?? 'None'}',
+                            SizedBox(width: 20),
+                            Icon(Icons.check_circle, color: Colors.green),
+                            SizedBox(width: 8),
+                            Text(
+                              'Completed: ${chore['isCompleted'] ? "Yes" : "No"}',
                               style: TextStyle(fontSize: 16),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Urgency and Completion Status
-                      Row(
-                        children: [
-                          Icon(Icons.warning, color: Colors.redAccent),
-                          SizedBox(width: 8),
-                          Text(
-                            'Urgent: ${chore['isUrgent'] ? "Yes" : "No"}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(width: 20),
-                          Icon(Icons.check_circle, color: Colors.green),
-                          SizedBox(width: 8),
-                          Text(
-                            'Completed: ${chore['isCompleted'] ? "Yes" : "No"}',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Owner Name
-                      Row(
-                        children: [
-                          Icon(Icons.person, color: kColor3),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              'Owner: ${chore['ownerName'] ?? 'Unknown'}',
-                              style: TextStyle(fontSize: 16),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        // Owner Name
+                        Row(
+                          children: [
+                            Icon(Icons.person, color: kColor3),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Owner: ${chore['ownerName'] ?? 'Unknown'}',
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 8),
-                      // Interested People Button
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton.icon(
-                          onPressed: () {
-                            // Add functionality to show interested people
-                          },
-                          icon: Icon(Icons.people, color: Colors.white),
-                          label: Text('Interested People'),
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.white, backgroundColor: kColor1,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8),
+                        // Interested People Button
+                        // Inside ListView.builder
+                        Align(
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min, // Minimize the row size to fit buttons
+                            children: [
+                              // New View Details Button
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  // Navigate to ChoreDetailsPage and pass the choreId
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ChoreDetailsPage(choreId: choreId),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.info, color: Colors.white),
+                                label: Text('View Details'),
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white, // Text/Icon color
+                                  backgroundColor: kColor2, // Background color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 4), // Space between buttons
+                              // Existing Interested People Button
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  // Navigate to InterestedPeoplePage and pass the choreId
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => InterestedPeoplePage(choreId: choreId),
+                                    ),
+                                  );
+                                },
+                                icon: Icon(Icons.people, color: Colors.white),
+                                label: Text('Interested'),
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white, // Text/Icon color
+                                  backgroundColor: kColor1, // Background color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                      // Image (if available)
-                      chore['imageUrl'] != null
-                          ? Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.network(
-                            chore['imageUrl'],
-                            height: 150,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
+
+                        // Image (if available)
+                        chore['imageUrl'] != null
+                            ? Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.network(
+                              chore['imageUrl'],
+                              height: 150,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
                           ),
-                        ),
-                      )
-                          : Container(), // Show no image if imageUrl is not available
-                    ],
+                        )
+                            : Container(), // Show no image if imageUrl is not available
+                      ],
+                    ),
                   ),
                 ),
               );
