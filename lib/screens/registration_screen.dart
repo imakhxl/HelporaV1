@@ -115,166 +115,164 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         inAsyncCall: showSpinner,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Flexible(
-                  child: Hero(
-                    tag: 'logo',
-                    child: Container(
-                      height: 200.0,
-                      child: Image.asset('images/logo.png'),
-                    ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Flexible(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 200.0,
+                    child: Image.asset('images/logo.png'),
                   ),
                 ),
-                Text(
-                  "Get Started !",textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    fontWeight: FontWeight.w500,
-                    color: kColor1,
-                    fontFamily: "Poppins",
+              ),
+              Text(
+                "Get Started !",textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 35.0,
+                  fontWeight: FontWeight.w500,
+                  color: kColor1,
+                  fontFamily: "Poppins",
+                ),
+              ),
+              const Gap(20),
+              TextField(
+                keyboardType: TextInputType.name,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  name = value;
+                },
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your name"),
+              ),
+              const SizedBox(height: 8.0),
+              TextField(
+                keyboardType: TextInputType.phone,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  phoneNumber = value;
+                },
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your phone number"),
+              ),
+              const SizedBox(height: 8.0),
+              TextField(
+                keyboardType: TextInputType.emailAddress,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  email = value;
+                },
+                decoration:
+                kTextFieldDecoration.copyWith(hintText: "Enter your email"),
+              ),
+              const SizedBox(height: 8.0),
+              TextField(
+                obscureText: true,
+                textAlign: TextAlign.center,
+                onChanged: (value) {
+                  password = value;
+                },
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: "Enter your password"),
+              ),
+              const SizedBox(height: 24.0),
+
+              // ID Proof Upload Button
+              TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(50, 20),
+                  foregroundColor: kColor4,
+                  backgroundColor: kColor2,
+                  side: BorderSide(
+                    color: kColor4,
+                    width: 2,
+                    style: BorderStyle.solid,
                   ),
+                  padding: EdgeInsets.all(5.0),
                 ),
-                const Gap(20),
-                TextField(
-                  keyboardType: TextInputType.name,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    name = value;
-                  },
-                  decoration:
-                  kTextFieldDecoration.copyWith(hintText: "Enter your name"),
+                onPressed: _pickImage,
+                child: Text('Upload ID Proof', style: TextStyle(height: 2, fontFamily: "Poppins", fontWeight: FontWeight.w500,color: Colors.black),),
+              ),
+
+              // Show uploaded image preview (optional)
+              _idProofImage != null
+                  ? Image.file(_idProofImage!)
+                  : Text("No image selected", textAlign: TextAlign.center,style: kTextPoppins,),
+
+              const SizedBox(height: 24.0),
+
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFEFAA7C)),
+
                 ),
-                const SizedBox(height: 8.0),
-                TextField(
-                  keyboardType: TextInputType.phone,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    phoneNumber = value;
-                  },
-                  decoration:
-                  kTextFieldDecoration.copyWith(hintText: "Enter your phone number"),
-                ),
-                const SizedBox(height: 8.0),
-                TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    email = value;
-                  },
-                  decoration:
-                  kTextFieldDecoration.copyWith(hintText: "Enter your email"),
-                ),
-                const SizedBox(height: 8.0),
-                TextField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    password = value;
-                  },
-                  decoration: kTextFieldDecoration.copyWith(
-                      hintText: "Enter your password"),
-                ),
-                const SizedBox(height: 24.0),
-            
-                // ID Proof Upload Button
-                TextButton(
-                  style: TextButton.styleFrom(
-                    minimumSize: Size(50, 20),
-                    foregroundColor: kColor4,
-                    backgroundColor: kColor2,
-                    side: BorderSide(
-                      color: kColor4,
-                      width: 2,
-                      style: BorderStyle.solid,
-                    ),
-                    padding: EdgeInsets.all(5.0),
-                  ),
-                  onPressed: _pickImage,
-                  child: Text('Upload ID Proof', style: TextStyle(height: 2, fontFamily: "Poppins", fontWeight: FontWeight.w500,color: Colors.black),),
-                ),
-            
-                // Show uploaded image preview (optional)
-                _idProofImage != null
-                    ? Image.file(_idProofImage!)
-                    : Text("No image selected", textAlign: TextAlign.center,style: kTextPoppins,),
-            
-                const SizedBox(height: 24.0),
-            
-                ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFFEFAA7C)),
-            
-                  ),
-                  onPressed: () async {
-                    setState(() {
-                      showSpinner = true;
-                    });
-            
-                    if (validateFields()) {
-                      try {
-                        final newUser =
-                            await _auth.createUserWithEmailAndPassword(
-                          email: email!,
-                          password: password!,
-                        );
-            
-                        if (newUser != null) {
-                          // Upload the ID proof image and get its download URL
-                          String? imageUrl;
-                          if (_idProofImage != null) {
-                            imageUrl = await _uploadImage(_idProofImage!);
-                          }
-            
-                          // Store additional user details in Firestore
-                          await _firestore
-                              .collection('users')
-                              .doc(newUser.user!.uid)
-                              .set({
-                            'name': name,
-                            'email': email,
-                            'phoneNumber': phoneNumber,
-                            'humanityPoints': 0,
-                            'userId': newUser.user!.uid,
-                            'idProofUrl': imageUrl, // Store image URL
-                          });
-            
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    HomePage(userId: newUser.user!.uid)),
-                          );
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+
+                  if (validateFields()) {
+                    try {
+                      final newUser =
+                          await _auth.createUserWithEmailAndPassword(
+                        email: email!,
+                        password: password!,
+                      );
+
+                      if (newUser != null) {
+                        // Upload the ID proof image and get its download URL
+                        String? imageUrl;
+                        if (_idProofImage != null) {
+                          imageUrl = await _uploadImage(_idProofImage!);
                         }
-                      } catch (e) {
-                        print(e);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Error: Unable to create user. Please try again.')),
-                        );
-                      } finally {
-                        setState(() {
-                          showSpinner = false;
+
+                        // Store additional user details in Firestore
+                        await _firestore
+                            .collection('users')
+                            .doc(newUser.user!.uid)
+                            .set({
+                          'name': name,
+                          'email': email,
+                          'phoneNumber': phoneNumber,
+                          'humanityPoints': 0,
+                          'userId': newUser.user!.uid,
+                          'idProofUrl': imageUrl, // Store image URL
                         });
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomePage(userId: newUser.user!.uid)),
+                        );
                       }
-                    } else {
+                    } catch (e) {
+                      print(e);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(
+                                'Error: Unable to create user. Please try again.')),
+                      );
+                    } finally {
                       setState(() {
                         showSpinner = false;
                       });
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text('Please enter valid information.')),
-                      );
                     }
-                  },
-                  child: Text('Register',style: TextStyle(fontFamily: "Poppins",color: Colors.black, fontSize: 15),),
-                ),
-              ],
-            ),
+                  } else {
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text('Please enter valid information.')),
+                    );
+                  }
+                },
+                child: Text('Register',style: TextStyle(fontFamily: "Poppins",color: Colors.black, fontSize: 15),),
+              ),
+            ],
           ),
         ),
       ),
