@@ -79,10 +79,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ],
             ),
             Text(
-              '                                             Where helping hands earn!',
+              '                                           Where helping hands earn!',
               style: TextStyle(
                   color: Colors.black54,
-                  fontSize: 15,
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
                   fontFamily: 'Poppins',
                   fontWeight: FontWeight.w300),
             ),
