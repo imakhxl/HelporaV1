@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text(
           'Helpora',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: kColor4, fontWeight: FontWeight.w800, fontFamily: "Poppins"),
         ),
 
 

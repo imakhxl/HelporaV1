@@ -5,8 +5,6 @@ import 'package:helpora_v1/constants.dart';
 import 'package:helpora_v1/screens/choreDetails.dart';
 import 'interestedPeople.dart';
 
-const kPrimaryColor = Color(0xFF344955);
-
 class MyChoresPage extends StatefulWidget {
   @override
   _MyChoresPageState createState() => _MyChoresPageState();
@@ -18,9 +16,10 @@ class _MyChoresPageState extends State<MyChoresPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kColor4,
       appBar: AppBar(
-        title: Text('My Chores'),
-        backgroundColor: Colors.transparent,
+        title: Text('My Chores', style: kTextPoppins,),
+        backgroundColor: kColor4,
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -36,7 +35,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
           final chores = snapshot.data?.docs;
           if (chores == null || chores.isEmpty) {
             return Center(
-              child: Text('No chores found!'),
+              child: Text('No chores found!', style: kTextPoppins,),
             );
           }
           return ListView.builder(
@@ -60,14 +59,15 @@ class _MyChoresPageState extends State<MyChoresPage> {
                         // Chore Name
                         Row(
                           children: [
-                            Icon(Icons.task_alt, color: kPrimaryColor),
+                            Icon(Icons.task_alt, color: kColor1),
                             SizedBox(width: 8),
                             Text(
                               chore['choreName'] ?? 'No Chore Name',
                               style: TextStyle(
+                                fontFamily: "Poppins",
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                color: kPrimaryColor,
+                                fontSize: 22,
+                                color: kColor1,
                               ),
                             ),
                           ],
@@ -81,7 +81,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Location: ${chore['location'] ?? 'Unknown'}',
-                                style: TextStyle(fontSize: 16),
+                                style: kText2,
                               ),
                             ),
                           ],
@@ -95,7 +95,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Reward: ${chore['reward'] ?? 'None'}',
-                                style: TextStyle(fontSize: 16),
+                                style: kText2,
                               ),
                             ),
                           ],
@@ -108,14 +108,14 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             SizedBox(width: 8),
                             Text(
                               'Urgent: ${chore['isUrgent'] ? "Yes" : "No"}',
-                              style: TextStyle(fontSize: 16),
+                              style: kText2,
                             ),
                             SizedBox(width: 20),
                             Icon(Icons.check_circle, color: Colors.green),
                             SizedBox(width: 8),
                             Text(
                               'Completed: ${chore['isCompleted'] ? "Yes" : "No"}',
-                              style: TextStyle(fontSize: 16),
+                              style: kText2,
                             ),
                           ],
                         ),
@@ -128,7 +128,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                             Expanded(
                               child: Text(
                                 'Owner: ${chore['ownerName'] ?? 'Unknown'}',
-                                style: TextStyle(fontSize: 16),
+                                style:kText2,
                               ),
                             ),
                           ],
@@ -153,7 +153,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                                   );
                                 },
                                 icon: Icon(Icons.info, color: Colors.white),
-                                label: Text('View Details'),
+                                label: Text('View Details', style: TextStyle(color: kColor4, fontFamily: "Poppins", fontWeight: FontWeight.w600),),
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white, // Text/Icon color
                                   backgroundColor: kColor2, // Background color
@@ -175,7 +175,7 @@ class _MyChoresPageState extends State<MyChoresPage> {
                                   );
                                 },
                                 icon: Icon(Icons.people, color: Colors.white),
-                                label: Text('Interested'),
+                                label: Text('Interested', style: TextStyle(color: kColor4, fontFamily: "Poppins", fontWeight: FontWeight.w600),),
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: Colors.white, // Text/Icon color
                                   backgroundColor: kColor1, // Background color

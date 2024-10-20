@@ -6,6 +6,7 @@ const kColor3 = Color(0xFFEFAA7C);
 const kColor4 = Color(0xFFFCF1E2);
 
 const kTextPoppins = TextStyle(fontFamily: "Poppins");
+const kText2 = TextStyle(fontSize: 16, fontFamily: "Poppins");
 const kText1 = TextStyle(fontFamily: "Poppins", fontSize: 18, color: kColor1, fontWeight: FontWeight.w500);
 
 const kTextFieldDecoration = InputDecoration(

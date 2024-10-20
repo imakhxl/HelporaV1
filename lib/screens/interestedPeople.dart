@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:helpora_v1/constants.dart';
 
 
-const kTextPoppins = TextStyle(fontFamily: "Poppins");
-
 class InterestedPeoplePage extends StatefulWidget {
   final String choreId;
 

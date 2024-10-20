@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:helpora_v1/screens/EdirChore.dart';
+import 'package:helpora_v1/screens/EditChore.dart';
 import 'package:intl/intl.dart'; // Import intl for date formatting
 import 'package:helpora_v1/constants.dart'; // Import your constants
  // Import your edit chore page
@@ -259,9 +259,9 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: kColor1, // Use a color of your choice
                           ),
-                          child: const Text(
+                          child: Text(
                             "Edit Chore",
-                            style: TextStyle(color: Colors.white),
+                            style: kTextPoppins.copyWith(color: kColor4),
                           ),
                         ),
                       ),
@@ -279,7 +279,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                         ),
                         child: Text(
                           isInterested ? "Interested" : "Show interest",
-                          style: const TextStyle(color: Colors.white),
+                          style: kTextPoppins.copyWith(color: kColor4),
                         ),
                       ),
                     ),
