@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:helpora_v1/screens/postchore.dart';
 import 'package:helpora_v1/screens/profile.dart';
+
+import 'package:helpora_v1/constants.dart';
+
 import 'choreDetails.dart';
 import 'mychores.dart';
-
-// Color Scheme Constants
-const kColor1 = Color(0xFF477B72);
-const kColor2 = Color(0xFFF7BA34);
-const kColor3 = Color(0xFFEFAA7C);
-const kColor4 = Color(0xFFFCF1E2);
 
 class HomePage extends StatefulWidget {
   static String id = 'home_screen';
@@ -74,6 +71,9 @@ class _HomePageState extends State<HomePage> {
           'Helpora',
           style: TextStyle(color: Colors.white),
         ),
+
+
+
         backgroundColor: kColor1,
         automaticallyImplyLeading: false,
         actions: [

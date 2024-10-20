@@ -3,11 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gap/gap.dart';
 import 'package:helpora_v1/screens/login_screen.dart';
+import 'package:helpora_v1/constants.dart';
 
-const kColor1 = Color(0xFF477B72);
-const kColor2 = Color(0xFFF7BA34);
-const kColor3 = Color(0xFFEFAA7C);
-const kColor4 = Color(0xFFFCF1E2);
+// const kColor1 = Color(0xFF477B72);
+// const kColor2 = Color(0xFFF7BA34);
+// const kColor3 = Color(0xFFEFAA7C);
+// const kColor4 = Color(0xFFFCF1E2);
 
 const kTextFieldDecoration = InputDecoration(
   hintText: '',

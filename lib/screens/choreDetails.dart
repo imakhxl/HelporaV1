@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-
-const kColor1 = Color(0xFF477B72);
-const kColor2 = Color(0xFFF7BA34);
-const kColor3 = Color(0xFFEFAA7C);
-const kColor4 = Color(0xFFFCF1E2);
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:helpora_v1/constants.dart'; // Import Firebase Auth
 
 class ChoreDetailsPage extends StatefulWidget {
   final String choreId;
@@ -31,7 +27,8 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
 
   Future<void> _fetchChoreDetails() async {
     try {
-      final docSnapshot = await _firestore.collection('chores').doc(widget.choreId).get();
+      final docSnapshot =
+          await _firestore.collection('chores').doc(widget.choreId).get();
       if (docSnapshot.exists) {
         setState(() {
           choreDetails = docSnapshot.data();
@@ -52,6 +49,7 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
         await _firestore.collection('interestedChores').add({
           'choreId': widget.choreId,
           'choreName': choreDetails?['choreName'] ?? 'Not available',
+          'description': choreDetails?['description'] ?? 'Not available',
           'location': choreDetails?['location'] ?? 'Not available',
           'ownerName': choreDetails?['ownerName'] ?? 'Not available',
           'reward': choreDetails?['reward'] ?? 'Not available',
@@ -85,19 +83,24 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
     return Scaffold(
       backgroundColor: kColor4,
       appBar: AppBar(
-        title: const Text("Chore Details"),
+        title: const Text(
+          "Chore Details",
+          style: kTextPoppins,
+        ),
         backgroundColor: kColor1,
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch, // Make the column take the full width
+          crossAxisAlignment:
+              CrossAxisAlignment.stretch, // Make the column take the full width
           children: [
             // Chore Image
             Container(
               height: MediaQuery.of(context).size.height * 0.4,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(choreDetails!['imageUrl'] ?? 'https://via.placeholder.com/150'), // Default image URL
+                  image: NetworkImage(choreDetails!['imageUrl'] ??
+                      'https://via.placeholder.com/150'), // Default image URL
                   fit: BoxFit.cover,
                 ),
               ),
@@ -113,22 +116,39 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                   // Chore Name
                   Row(
                     children: [
-                      Icon(Icons.assignment, color: kColor1),
+                      Icon(Icons.task_alt, color: kColor1),
                       const SizedBox(width: 8.0),
                       Text(
                         choreDetails!['choreName'] ?? 'Not available',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
-
+                  //Description
+                  Row(
+                    children: [
+                      Icon(Icons.assignment, color: kColor1),
+                      const SizedBox(width: 8.0),
+                      Text(
+                        choreDetails!['description'] ?? 'Not available',
+                        style: kTextPoppins,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16.0),
                   // Location
                   Row(
                     children: [
                       Icon(Icons.location_on, color: kColor1),
                       const SizedBox(width: 8.0),
-                      Text(choreDetails!['location'] ?? 'Not available'),
+                      Text(
+                        choreDetails!['location'] ?? 'Not available',
+                        style: kTextPoppins,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -138,7 +158,10 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     children: [
                       Icon(Icons.person, color: kColor1),
                       const SizedBox(width: 8.0),
-                      Text(choreDetails!['ownerName'] ?? 'Not available'),
+                      Text(
+                        choreDetails!['ownerName'] ?? 'Not available',
+                        style: kTextPoppins,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -148,7 +171,10 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     children: [
                       Icon(Icons.monetization_on, color: kColor1),
                       const SizedBox(width: 8.0),
-                      Text(choreDetails!['reward'] ?? 'Not available'),
+                      Text(
+                        choreDetails!['reward'] ?? 'Not available',
+                        style: kTextPoppins,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -158,7 +184,10 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     children: [
                       Icon(Icons.phone, color: kColor1),
                       const SizedBox(width: 8.0),
-                      Text(choreDetails!['contact'] ?? 'Not available'),
+                      Text(
+                        choreDetails!['contact'] ?? 'Not available',
+                        style: kTextPoppins,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 16.0),
@@ -168,7 +197,12 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                     children: [
                       Icon(Icons.warning, color: kColor1),
                       const SizedBox(width: 8.0),
-                      Text(choreDetails!['isUrgent'] == true ? "Urgent" : "Not Urgent"),
+                      Text(
+                        choreDetails!['isUrgent'] == true
+                            ? "Urgent"
+                            : "Not Urgent",
+                        style: kTextPoppins,
+                      ),
                     ],
                   ),
                   const SizedBox(height: 24.0),
@@ -183,11 +217,16 @@ class _ChoreDetailsPageState extends State<ChoreDetailsPage> {
                 onPressed: _toggleInterest,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isInterested ? kColor2 : kColor3,
-                  padding: const EdgeInsets.symmetric(vertical: 16.0), // Expand vertically
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0), // Expand vertically
                 ),
                 child: Text(
                   isInterested ? "Interested" : "Show Interest",
-                  style: TextStyle(fontSize: 18), // Increase font size
+                  style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontSize: 18,
+                      color: kColor4,
+                      fontWeight: FontWeight.w600), // Increase font size
                 ),
               ),
             ),
