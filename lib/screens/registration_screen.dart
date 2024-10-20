@@ -25,6 +25,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String? password;
   String? name;
   String? phoneNumber;
+
   File? _idProofImage; // File for the ID proof image
   bool showSpinner = false;
 
@@ -188,6 +189,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           'name': name,
                           'email': email,
                           'phoneNumber': phoneNumber,
+                          'humanityPoints': 0,
                           'userId': newUser.user!.uid,
                           'idProofUrl': imageUrl, // Store image URL
                         });
